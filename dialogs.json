@@ -1,0 +1,498 @@
+{
+ "app": "ccl-notebook",
+ "version": 1,
+ "exported": "2026-11-23T04:05:57.497Z",
+ "dialogs": {
+  "mwspt4enrgldk": {
+   "title": "Applying for a Kitchen Hand Position - Social",
+   "domain": "Social",
+   "source": "https://www.cclcat.com/b3f0e600-d8b7-11f1-b9d1-e5a4b6589d42",
+   "briefing": "This dialogue is an in-person conversation between an English-speaking restaurant manager and a job seeker who is looking for work as a kitchen hand. The job seeker visits the restaurant to ask whether the position is still available. The dialogue begins now.",
+   "segs": [
+    {
+     "text": "Good afternoon. Would you like a table, or would you like to order takeaway?",
+     "ref": "下午好。您是想在店里用餐，还是想点外卖？",
+     "lang": "en"
+    },
+    {
+     "text": "你好，都不是。我是来找工作的，不知道你们厨房帮手的职位还有没有空缺？",
+     "ref": "Hello, neither, actually. I'm here to look for work. I was wondering whether you still have any vacancies for a kitchen hand.",
+     "lang": "zh"
+    },
+    {
+     "text": "We're often looking for new staff. What experience do you have working in restaurants, and why did you choose this restaurant?",
+     "ref": "我们经常招聘新员工。你有哪些餐厅工作经验？为什么选择我们这家餐厅？",
+     "lang": "en"
+    },
+    {
+     "text": "我已经在餐厅工作五年了，但我之前在市区工作的那家餐厅要关门了。",
+     "ref": "I've been working in restaurants for five years, but the restaurant I was working at in the city is closing down.",
+     "lang": "zh"
+    },
+    {
+     "text": "It seems like many restaurants in the city are closing down. What different kinds of work can you do?",
+     "ref": "看来市区有不少餐厅都在关门。你能做哪些不同类型的工作？",
+     "lang": "en"
+    },
+    {
+     "text": "我可以在厨房工作，会做清洁、准备食物，还可以接电话订单。",
+     "ref": "I can work in the kitchen. I can do cleaning, prepare food and take phone orders.",
+     "lang": "zh"
+    },
+    {
+     "text": "I often need people who are happy to work on Friday and Saturday nights. Which nights are you available?",
+     "ref": "我经常需要愿意在星期五和星期六晚上上班的员工。你哪些晚上有空？",
+     "lang": "en"
+    },
+    {
+     "text": "你什么时候需要我都可以。我每天晚上都有空。我白天没有工作，周末也不常去聚会。",
+     "ref": "I can work whenever you need me. I'm available every evening, I don't have a daytime job, and I don't often go to parties on weekends.",
+     "lang": "zh"
+    },
+    {
+     "text": "In that case, you probably could start this weekend. I'll give you an application form to fill in.",
+     "ref": "既然如此，你可能这周末就能开始上班。我给你一份申请表填写。",
+     "lang": "en"
+    },
+    {
+     "text": "非常感谢！这里离我住的地方很近，我就住在下一条街。工作地点离家近真好。",
+     "ref": "Thank you very much! This restaurant is very close to where I live. I live in the next street. It's great to work close to home.",
+     "lang": "zh"
+    },
+    {
+     "text": "Please bring your completed application form back later today. We offer good wages and provide staff meals.",
+     "ref": "请在今天晚些时候把填好的申请表交回来。我们提供优厚的工资和员工餐。",
+     "lang": "en"
+    },
+    {
+     "text": "我想你会觉得我是个好员工。我做人踏实，做事认真负责，而且很容易与别人相处。",
+     "ref": "I think you'll find that I'm a good employee. I'm down-to-earth, take my work seriously, am responsible and get along well with others.",
+     "lang": "zh"
+    },
+    {
+     "text": "That's great. It sounds like a great match. Bring your application form back later this afternoon, and you can start this Friday.",
+     "ref": "那太好了。听起来你很适合这份工作。今天下午晚些时候把申请表交回来，你这周五就可以开始上班。",
+     "lang": "en"
+    },
+    {
+     "text": "太好了！我没想到这么快就找到工作了，真是松了一口气。我现在就回家把表填好，下午见。",
+     "ref": "That's wonderful! I didn't expect to find a job so quickly. What a relief! I'll go home and fill in the form now. See you this afternoon.",
+     "lang": "zh"
+    }
+   ],
+   "ratings": {},
+   "pos": 1,
+   "completions": [],
+   "created": "2026-11-23T03:37:26.927Z",
+   "updated": "2026-11-23T03:38:21.769Z"
+  },
+  "mwsqpzk9xcms4": {
+   "title": "Acting Lessons for Children - Education",
+   "domain": "Education",
+   "source": "https://www.cclcat.com/37684b40-d8b8-11f1-b9d1-e5a4b6589d42",
+   "briefing": "This dialogue is an in-person conversation between an English-speaking organiser at a local theatre and a parent who wants to enrol his daughter in acting lessons for children. The dialogue begins now.",
+   "segs": [
+    {
+     "text": "Hi, welcome to the Green Room Theatre. My assistant mentioned you were interested in acting lessons for children.",
+     "ref": "你好，欢迎来到绿屋剧院。我的助理提到，您对儿童表演课程感兴趣。",
+     "lang": "en"
+    },
+    {
+     "text": "是的，我女儿想当女演员。我觉得在剧院学习会是一个很好的开始。",
+     "ref": "Yes, my daughter wants to be an actress. I think learning at a theatre would be a good start.",
+     "lang": "zh"
+    },
+    {
+     "text": "This will be the best place to start. We don't run an acting school, but we do run acting lessons for children during the school holidays.",
+     "ref": "这里会是最好的起点。我们不经营表演学校，但我们确实在学校假期期间开设儿童表演课程。",
+     "lang": "en"
+    },
+    {
+     "text": "这里确实是一个很好的起点。请问课程持续多长时间？费用是多少？",
+     "ref": "This is certainly a good place to start. How long does the course last, and how much does it cost?",
+     "lang": "zh"
+    },
+    {
+     "text": "It's usually from 8 am to 11 am, Monday to Friday, for one week, and the week costs 200 dollars.",
+     "ref": "课程通常从星期一到星期五，每天上午八点到十一点，持续一周，一周的费用是两百澳元。",
+     "lang": "en"
+    },
+    {
+     "text": "听起来很不错。我会帮她报名，她应该会很兴奋。请问她需要带什么吗？",
+     "ref": "That sounds great. I'll enrol her, and she should be very excited. Does she need to bring anything?",
+     "lang": "zh"
+    },
+    {
+     "text": "No, we will prepare the costumes and food, but you need to fill in a form about any allergies and medical concerns.",
+     "ref": "不需要，我们会准备服装和食物，但你需要填写一份关于任何过敏和健康问题的表格。",
+     "lang": "en"
+    },
+    {
+     "text": "幸好我问了。这家当地剧院很漂亮，我以前从来没有来这里看过剧。",
+     "ref": "I'm glad I asked. This local theatre is beautiful. I've never been here to see a play before.",
+     "lang": "zh"
+    },
+    {
+     "text": "I can add you to our email newsletter list, so you can receive information about new plays.",
+     "ref": "我可以把您加入我们的电子通讯订阅名单，这样您就能收到有关新剧目的信息。",
+     "lang": "en"
+    },
+    {
+     "text": "好的，谢谢。下次如果有适合全家看的剧，我会带女儿来看，她一定会很开心。",
+     "ref": "Yes, please. Thank you. Next time there is a play suitable for the whole family, I'll bring my daughter to see it. She'll be very happy.",
+     "lang": "zh"
+    },
+    {
+     "text": "Please do. We have four to five plays every year. We often have roles available for children, and your daughter can come to the audition for a role.",
+     "ref": "欢迎你们来。我们每年会上演四到五部戏。我们经常有适合儿童的角色，您的女儿可以来参加角色试镜。",
+     "lang": "en"
+    },
+    {
+     "text": "我之前不知道没有经验也可以参加试镜。我觉得她会喜欢当地剧院的活动的。",
+     "ref": "I didn't know she could audition without any experience. I think she'll enjoy the activities at the local theatre.",
+     "lang": "zh"
+    },
+    {
+     "text": "Everyone begins with no experience. We welcome new members, and we also need people to help run things on show nights.",
+     "ref": "每个人一开始都没有经验。我们欢迎新成员，也需要有人在演出当晚帮忙处理各项事务。",
+     "lang": "en"
+    },
+    {
+     "text": "非常感谢。我会把电子邮箱地址给你，用来接收电子通讯。相信我们很快就会再见。",
+     "ref": "Thank you very much. I'll give you my email address so I can receive the email newsletter. I'm sure we'll see each other again soon.",
+     "lang": "zh"
+    }
+   ],
+   "ratings": {},
+   "pos": 0,
+   "completions": [],
+   "created": "2026-11-23T04:03:00.297Z",
+   "updated": "2026-11-23T04:03:00.297Z"
+  },
+  "mwsqqi4trpjzi": {
+   "title": "Skin Check and Sun Protection III - Medical",
+   "domain": "Medical",
+   "source": "https://www.cclcat.com/f301a1e0-dd62-11f1-b9d1-e5a4b6589d42",
+   "briefing": "This dialogue is between an English-speaking doctor and a patient at a skin clinic. The patient has come for a skin check and is discussing the importance of regular skin checks and ways to protect the skin from sun damage. The dialogue begins now.",
+   "segs": [
+    {
+     "text": "Hi, welcome to our clinic. I believe you are here to have a skin check today.",
+     "ref": "您好，欢迎来到我们诊所。我想您今天是来做皮肤检查的。",
+     "lang": "en"
+    },
+    {
+     "text": "您好，是的。我是两年前搬来澳大利亚的。在来这里之前，我都不知道做皮肤检查有多么重要。",
+     "ref": "Hello, yes. I moved to Australia two years ago. Before coming here, I did not know how important it was to have skin checks.",
+     "lang": "zh"
+    },
+    {
+     "text": "Yes, the sun can damage your skin. That is why it is important to have a skin check every year, so that any problems can be identified early.",
+     "ref": "是的，阳光会损伤您的皮肤。因此，每年做一次皮肤检查很重要，这样任何问题都可以及早发现。",
+     "lang": "en"
+    },
+    {
+     "text": "这听起来很有道理。我对这里太阳的强烈程度感到非常惊讶，尤其是在夏天。我刚来这里时，还曾被严重晒伤过。",
+     "ref": "That sounds very reasonable. I was very surprised by how strong the sun is here, especially in summer. When I first came here, I was once badly sunburnt.",
+     "lang": "zh"
+    },
+    {
+     "text": "Well, you only need some sunlight for your health, but it is important to protect your skin and avoid getting sunburnt.",
+     "ref": "嗯，适当晒一些太阳对健康有益，但重要的是要保护好你的皮肤，避免晒伤。",
+     "lang": "en"
+    },
+    {
+     "text": "我想确保自己的皮肤不受到伤害。有什么简单的方法吗？",
+     "ref": "I want to make sure my skin is not harmed. Are there any simple ways to do that?",
+     "lang": "zh"
+    },
+    {
+     "text": "When you're out in the sun, it's a good idea to wear a long-sleeved T-shirt, a hat and sunglasses.",
+     "ref": "当你在户外太阳底下时候，穿长袖T恤、戴上帽子和墨镜是一个好主意。",
+     "lang": "en"
+    },
+    {
+     "text": "实际上我会戴宽檐帽子和墨镜，但是在太阳底下穿长袖T恤太热了。",
+     "ref": "I actually wear a wide-brimmed hat and sunglasses, but it's too hot to wear a long-sleeved T-shirt in the sun.",
+     "lang": "zh"
+    },
+    {
+     "text": "Perhaps you could wear cotton clothes. You'll feel cooler wearing this type of fabric.",
+     "ref": "或许你可以穿棉质的衣服。如果你穿这类材质的衣服会感觉很凉爽。",
+     "lang": "en"
+    },
+    {
+     "text": "好的，我会试试。至少如果我穿了长袖T恤，就不用在胳膊上涂防晒霜了。",
+     "ref": "Okay, I'll give that a try. At least if I wear a long-sleeved T-shirt, I won't have to put sunscreen on my arms.",
+     "lang": "zh"
+    },
+    {
+     "text": "Don't forget, you can still get sun damage on a cloudy day, so you need to protect your skin.",
+     "ref": "别忘了，即使在阴天，阳光也仍然会对皮肤造成伤害，所以您需要保护皮肤。",
+     "lang": "en"
+    },
+    {
+     "text": "我之前从来没有听说过，真让人惊讶。听起来我以后得时刻小心阳光了。",
+     "ref": "I had never heard that before. That is really surprising. It sounds like I need to be careful about the sun all the time from now on.",
+     "lang": "zh"
+    },
+    {
+     "text": "Yes, that is a good way to look at it. Be careful about the sun, and don't forget to use sunscreen.",
+     "ref": "是的，这是一个很好的理解方式。要注意防晒，别忘了涂防晒霜。",
+     "lang": "en"
+    },
+    {
+     "text": "好的，我会的。谢谢您。我真高兴今天来见了您。",
+     "ref": "Okay, I will. Thank you. I am really glad I came to see you today.",
+     "lang": "zh"
+    }
+   ],
+   "ratings": {},
+   "pos": 0,
+   "completions": [],
+   "created": "2026-11-23T04:03:24.365Z",
+   "updated": "2026-11-23T04:03:24.365Z"
+  },
+  "mwsqqu8283t9h": {
+   "title": "Community Food Pantry - Social",
+   "domain": "Social",
+   "source": "https://www.cclcat.com/b01fa240-dd63-11f1-b9d1-e5a4b6589d42",
+   "briefing": "The following dialogue takes place in a community centre between a Mandarin-speaking unemployed people and an English-speaking social worker. They are discussing food pantry, which is used to provide food for the poor. The dialogue starts now.",
+   "segs": [
+    {
+     "text": "Hi, it's good to see you. You haven't been to the community centre for quite a long time.",
+     "ref": "嗨，见到你真好。你已经很久没来社区中心了。",
+     "lang": "en"
+    },
+    {
+     "text": "你好，是的，我知道我最近有经济危机，所以我几乎不出门。",
+     "ref": "Hello, yes, I know. I've been facing a financial crisis lately, so I hardly go out.",
+     "lang": "zh"
+    },
+    {
+     "text": "I'm sorry to hear that. I have some time now, and we can talk about it. Maybe there's something I can do to help you.",
+     "ref": "听到这个消息我很难过。我现在有时间，我们可以聊聊。也许我能帮到你点什么。",
+     "lang": "en"
+    },
+    {
+     "text": "谢谢你。我失业了，我想知道我有没有资格加入社区菜园，这样我就可以自己种菜，不用买菜了。",
+     "ref": "Thank you. I've lost my job, and I was wondering if I'm eligible to join the community garden, so I can grow my own vegetables and avoid buying them.",
+     "lang": "zh"
+    },
+    {
+     "text": "I'll check if there are any spaces for you. But as you know, it takes time to grow vegetables, so it may not help you right now.",
+     "ref": "我会帮你查查是否有空位。不过，种菜需要时间，暂时可能帮不上忙。",
+     "lang": "en"
+    },
+    {
+     "text": "我知道，但是我没办法了，我想我最近的情况不会很快好转。所以在接下来的几个月，任何能帮到我的事情，都会让我很开心的。",
+     "ref": "I know, but I don't have many options. I don't think my situation will improve soon, so anything that can help in the next few months would make me very happy.",
+     "lang": "zh"
+    },
+    {
+     "text": "Okay, I'll check if you can join our garden. Meanwhile, if you don't have a job, you may be eligible for our community pantry.",
+     "ref": "好的，我会看看你能否加入我们的菜园。同时，如果你没有工作，你可能有资格使用我们的社区食品室。",
+     "lang": "en"
+    },
+    {
+     "text": "社区食品室？我不知道这个。",
+     "ref": "Community pantry? I'm not familiar with that.",
+     "lang": "zh"
+    },
+    {
+     "text": "It's a stock of food donations for people who need them. You can take anything you need from the food pantry free of charge.",
+     "ref": "这是专门为有需要的人提供的食品捐赠储备。你可以免费领取你需要的食物。",
+     "lang": "en"
+    },
+    {
+     "text": "这太好了，人们捐赠食物来帮助其他人。这太有爱了，人们真大方。我们住在一个可爱的社区里，食品室是如何运作的呢？",
+     "ref": "That's wonderful! People donating food to help others is so kind. We live in such a lovely community. How does the pantry work?",
+     "lang": "zh"
+    },
+    {
+     "text": "Our food pantry is a room in the community centre. It opens twice a week. You can just get in and pack your bag with the items you need.",
+     "ref": "我们的食品室在社区中心，每周开放两次。你可以随时来，拿上你需要的食物。",
+     "lang": "en"
+    },
+    {
+     "text": "这对我帮助非常大。如果我找到了新工作，我以后也会捐赠食物来帮助其他人。我希望是如此。",
+     "ref": "This would help me a lot. If I find a new job, I will also donate food to help others in the future. I hope that happens.",
+     "lang": "zh"
+    }
+   ],
+   "ratings": {},
+   "pos": 0,
+   "completions": [],
+   "created": "2026-11-23T04:03:40.034Z",
+   "updated": "2026-11-23T04:03:40.034Z"
+  },
+  "mwsqr3e87ps4x": {
+   "title": "Making an Appointment with a Social Worker - Social Welfare",
+   "domain": "Social Welfare",
+   "source": "https://www.cclcat.com/2c4118b0-e2f3-11f1-902b-e3aecac024d5",
+   "briefing": "This dialogue is a phone conversation between an English-speaking staff member at the Social Services Department and a client. The client is calling to make an appointment with a social worker to get help with caring for an elderly grandmother. The dialogue begins now.",
+   "segs": [
+    {
+     "text": "Hello, this is the Social Services Department. How can I help you today?",
+     "ref": "你好，这里是社会服务部门。请问今天有什么可以帮您？",
+     "lang": "en"
+    },
+    {
+     "text": "你好，我想要预约和一位社工会面。",
+     "ref": "Hello, I'd like to make an appointment with a social worker.",
+     "lang": "zh"
+    },
+    {
+     "text": "Please tell me why you'd like to speak to a social worker. I need to make sure they're the right person for your needs.",
+     "ref": "请告诉我您为什么想和社工谈谈。我需要确认社工是否适合您的需求。",
+     "lang": "en"
+    },
+    {
+     "text": "我马上就要全职照顾我年迈的祖母了，我想了解一下我能得到什么帮助。",
+     "ref": "I'm about to start caring for my elderly grandmother full-time, and I'd like to find out what help I can get.",
+     "lang": "zh"
+    },
+    {
+     "text": "We have a Carer Support unit. I can arrange an appointment for you with a team member to discuss eligibility requirements.",
+     "ref": "我们有一个照顾者支援部门。我可以安排您和一位团队成员会面，讨论资格要求。",
+     "lang": "en"
+    },
+    {
+     "text": "不用了，谢谢。这不是我今天想咨询的事情。我想和一位社工聊聊我的整体情况。",
+     "ref": "No, thank you. That's not what I'd like to discuss today. I'd like to speak to a social worker about my overall situation.",
+     "lang": "zh"
+    },
+    {
+     "text": "I see. I can arrange an appointment with a social worker. Have you registered with the Social Services Department for any kind of support?",
+     "ref": "我明白了。我可以安排您和社工会面。您之前是否在社会服务部登记申请过任何援助？",
+     "lang": "en"
+    },
+    {
+     "text": "有的，我登记过。我目前正在接受学生援助金。",
+     "ref": "Yes, I have registered. I'm currently receiving student financial assistance.",
+     "lang": "zh"
+    },
+    {
+     "text": "Okay, I can make an appointment for you with a social worker. At the moment, there is an appointment available in three weeks' time, on Tuesday.",
+     "ref": "好的，我可以帮您预约和社工会面。目前有一个可预约的时间，是三周后的星期二。",
+     "lang": "en"
+    },
+    {
+     "text": "那要等很久。虽然这件事不是很紧急，但如果可以的话，我希望能在几天之内见到社工。",
+     "ref": "That's a long wait. Although it's not very urgent, I'd like to see a social worker within the next few days if possible.",
+     "lang": "zh"
+    },
+    {
+     "text": "If you're available tomorrow afternoon, there's an appointment at 3 pm that has just come up on the system.",
+     "ref": "如果您明天下午有空，系统里刚刚出现了一个明天下午三点的可预约时段。",
+     "lang": "en"
+    },
+    {
+     "text": "谢谢，这个时间对我来说更合适。请帮我预约这个时间。不过，我不知道该去哪里，因为我以前从没见过社工。",
+     "ref": "Thank you. That time suits me better. Please book that appointment for me. However, I don't know where to go because I've never seen a social worker before.",
+     "lang": "zh"
+    },
+    {
+     "text": "Okay, you'll receive an email with the appointment time, the social worker's name, and directions to the office. It's not hard to find.",
+     "ref": "好的，您会收到一封电子邮件，里面会注明预约时间、社工的姓名，以及前往办公室的路线。那里不难找。",
+     "lang": "en"
+    },
+    {
+     "text": "好的，谢谢。感谢你的帮助。祝你下午愉快。",
+     "ref": "Okay, thank you. I appreciate your help. Have a lovely afternoon.",
+     "lang": "zh"
+    }
+   ],
+   "ratings": {},
+   "pos": 0,
+   "completions": [],
+   "created": "2026-11-23T04:03:51.920Z",
+   "updated": "2026-11-23T04:03:51.920Z"
+  },
+  "mwsqrbodvbybv": {
+   "title": "Community Fun Run for Local Schools - Social",
+   "domain": "Social",
+   "source": "https://www.cclcat.com/b2bdceb0-e2f3-11f1-902b-e3aecac024d5",
+   "briefing": "This conversation is between John, a local resident, and a newcomer who has recently moved to the area. They meet in the morning and talk about a community fun run that raises money for local schools. The dialogue begins now.",
+   "segs": [
+    {
+     "text": "Good Morning. What a beautiful day! You look like you’ve just been exercising.",
+     "ref": "早上好，今天天气真好！你看起来像是刚锻炼完。",
+     "lang": "en"
+    },
+    {
+     "text": "你好，John。我刚刚和朋友去散步了。我通常在公园里跑步，或者绕着湖跑。",
+     "ref": "Hello, John. I’ve just been for a walk with a friend. I usually run in the park or around the lake.",
+     "lang": "zh"
+    },
+    {
+     "text": "If you like running, you can join the community fun run next month in the park. I participate with my family every year.",
+     "ref": "如果你喜欢跑步，可以参加下个月在公园举办的社区募捐跑活动。我每年都会和家人一起参加。",
+     "lang": "en"
+    },
+    {
+     "text": "听起来很有趣，但我从来没听说过募捐跑活动。在做决定之前，我想要了解更多信息。",
+     "ref": "It sounds interesting, but I’ve never heard of a fun run before. I’d like to find out more before making a decision.",
+     "lang": "zh"
+    },
+    {
+     "text": "You can read about it online. I'll send you the website address. It costs $30 to enter, and all the money goes to the local schools.",
+     "ref": "你可以上网了解一下。我会把网址发给你。报名费是三十澳元，所有款项都会捐给当地的学校。",
+     "lang": "en"
+    },
+    {
+     "text": "谢谢，我过会儿看看。它适合初学者吗？我开始跑步时间不长，而且很容易累。",
+     "ref": "Thank you. I’ll have a look later. Is it suitable for beginners? I haven’t been running for very long, and I get tired easily.",
+     "lang": "zh"
+    },
+    {
+     "text": "There are different races. You can choose a shorter or longer one. If you don't want to run, that's fine, you can walk instead.",
+     "ref": "活动有不同的赛程。你可以选择距离较短或较长的。如果你不想跑也没关系，可以改为步行。",
+     "lang": "en"
+    },
+    {
+     "text": "哦，听起来不错。我会问问我朋友愿不愿意和我一起参加，或许我们可以一起跑。",
+     "ref": "Oh, that sounds good. I’ll ask my friend if they’d like to take part with me. Perhaps we can run together.",
+     "lang": "zh"
+    },
+    {
+     "text": "That's a great idea! It's very fun, and afterwards there's a market with food and coffee.",
+     "ref": "好主意！这个活动很有趣，而且结束后还有一个市集，提供食物和咖啡。",
+     "lang": "en"
+    },
+    {
+     "text": "好的，我希望可以认识住在这里的其他人。我刚搬来不久，还没有很多朋友。",
+     "ref": "Great. I hope I can get to know other people who live here. I only moved here recently, and I don’t have many friends yet.",
+     "lang": "zh"
+    },
+    {
+     "text": "You will meet a lot of people. Everyone is very friendly. It's also a good way to support the local school.",
+     "ref": "你会见到很多人。大家都很友好。这也是支持当地学校的一个好方法。",
+     "lang": "en"
+    },
+    {
+     "text": "你说服我了！我明天就开始训练，确保自己能跑完全程。",
+     "ref": "You’ve convinced me! I’ll start training tomorrow to make sure I can run the whole distance.",
+     "lang": "zh"
+    },
+    {
+     "text": "That's great! Good luck with your training. See you there!",
+     "ref": "太好了！祝你训练顺利。到时候见！",
+     "lang": "en"
+    },
+    {
+     "text": "谢谢，祝你有愉快的一天！",
+     "ref": "Thank you. Have a lovely day!",
+     "lang": "zh"
+    }
+   ],
+   "ratings": {},
+   "pos": 0,
+   "completions": [],
+   "created": "2026-11-23T04:04:02.653Z",
+   "updated": "2026-11-23T04:04:02.653Z"
+  }
+ },
+ "meta": {
+  "lastId": "mwsqrbodvbybv"
+ }
+}

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>CCL 背题本</title>
+<title>Design Text</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
@@ -85,7 +85,7 @@ button{cursor:pointer}
 .tag{display:inline-block;border:1px solid var(--rule);border-radius:999px;padding:0 8px;font-size:.8rem;color:var(--muted);margin-left:6px;vertical-align:2px;font-weight:400}
 .bar{display:flex;height:8px;border-radius:999px;overflow:hidden;background:var(--r0)}
 .bar span{display:block;height:100%}
-.item .tools{display:flex;justify-content:flex-end;gap:6px}
+.item .tools{display:flex;justify-content:flex-end;align-items:center;flex-wrap:wrap;gap:6px}
 .small{font-size:.85rem;padding:6px 10px;min-height:34px;border-radius:9px}
 .empty{text-align:left;background:var(--sheet);border-radius:18px;padding:22px;margin-top:18px;box-shadow:var(--shadow)}
 .empty h2{margin:0 0 6px;font-size:1.2rem}
@@ -148,6 +148,12 @@ textarea{min-height:240px;resize:vertical;line-height:1.5}
 .rbtn.on i{background:var(--on-r)!important}
 .rbtn[data-l="1"].on{background:var(--r1)}.rbtn[data-l="2"].on{background:var(--r2)}.rbtn[data-l="3"].on{background:var(--r3)}.rbtn[data-l="4"].on{background:var(--r4)}
 
+.reading{background:var(--sheet);border-radius:20px;box-shadow:var(--shadow);padding:18px;display:grid;gap:12px}
+.reading .meta{display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--muted);font-size:.9rem}
+.reading .meta b{color:var(--ink)}
+.rline{padding:12px 14px;border-radius:12px;border:1px solid var(--line);font-size:1.12rem;line-height:1.6;color:var(--muted)}
+.rline.now{border-color:var(--accent);box-shadow:inset 4px 0 0 var(--accent);color:var(--ink)}
+.rtag{display:block;font-size:.8rem;color:var(--muted);margin-bottom:2px}
 .foot{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--paper);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .foot .wrap{display:flex;gap:10px;padding-top:10px;padding-bottom:10px}
 .foot .btn{flex:1}
@@ -203,7 +209,8 @@ function savePrefs(){ try { localStorage.setItem(PKEY, JSON.stringify(prefs)); }
 const S = {
   mode:'loading', dialogs:{}, meta:{}, view:'home',
   cur:null, idx:0, hint:0, filter:'all', showSrc:!prefs.hideSource, finish:false, plays:0,
-  importText:'', parsed:null, parseErr:'', confirmDel:null, notice:'', syncErr:'', slow:false, stamped:false
+  importText:'', parsed:null, parseErr:'', confirmDel:null, notice:'', syncErr:'', slow:false, stamped:false,
+  remoteMsg:'', syncNote:'', fileErr:'', readMsg:''
 };
 
 /* ---------- storage ---------- */
@@ -264,6 +271,7 @@ function subscribe(){
     if (first || S.mode === 'loading'){ first = false; S.mode = 'db'; }
     if (S.cur && !S.dialogs[S.cur]){ S.cur = null; S.view = 'home'; }
     if (S.view !== 'import' && S.view !== 'settings') render();
+    if (!snap.metadata.fromCache && !remoteReady) startRemote();
   }, err => {
     clearTimeout(timer);
     S.syncErr = '云端数据连接中断，刷新页面后重试。';
@@ -288,8 +296,9 @@ async function init(){
   } else {
     S.mode = 'local';
     localLoad();
-    S.notice = '这是本地版：进度保存在这台电脑的这个浏览器里。记得偶尔在“设置”里导出备份。';
+    S.notice = '这是本地版：进度保存在这台设备的这个浏览器里。记得偶尔在“设置”里导出备份。';
     render();
+    startRemote();
   }
 }
 
@@ -462,7 +471,7 @@ function touch(d){ d.updated = new Date().toISOString(); }
 /* ---------- actions ---------- */
 function openDialog(id, opts){
   const d = S.dialogs[id]; if (!d) return;
-  S.cur = id; S.view = 'study'; S.finish = false; S.stamped = false;
+  S.cur = id; S.view = 'study'; S.finish = false; S.stamped = false; S.syncNote = ''; S.readMsg = '';
   S.filter = (opts && opts.filter) || 'all';
   if (opts && opts.fromStart) S.idx = S.filter === 'weak' ? (weakList(d)[0] ?? 0) : 0;
   else S.idx = Math.min(d.pos || 0, d.segs.length - 1);
@@ -544,6 +553,204 @@ function deleteDialog(id){
   persist(id); S.confirmDel = null; render();
 }
 
+/* ---------- read-through: source, then translation, segment after segment ---------- */
+const reader = {on:false, tok:0, i:-1, part:''};
+function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+function sayChunk(text, lang, tok){
+  return new Promise(resolve => {
+    if (!synth || !reader.on || reader.tok !== tok){ resolve(); return; }
+    const u = new SpeechSynthesisUtterance(text);
+    const v = pickVoice(lang);
+    if (v){ u.voice = v; u.lang = v.lang; } else u.lang = lang === 'zh' ? 'zh-CN' : 'en-AU';
+    u.rate = Number(prefs.rate) || 1;
+    let done = false, t = null;
+    const fin = () => { if (done) return; done = true; clearTimeout(t); resolve(); };
+    t = setTimeout(fin, text.length * 400 / u.rate + 4000);   /* safety net if the browser never fires onend */
+    u.onend = fin; u.onerror = fin;
+    synth.speak(u);
+  });
+}
+async function sayText(text, lang, tok){
+  /* short pieces are safer: some voices cut off long utterances */
+  const chunks = String(text).match(/.+?(?:[。！？]+|[.!?]+(?=\s|$)|$)/gs) || [String(text)];
+  for (const c of chunks){
+    if (!c.trim()) continue;
+    if (!reader.on || reader.tok !== tok) return;
+    await sayChunk(c.trim(), lang, tok);
+  }
+}
+function readFrom(list){
+  if (S.finish) return 0;
+  const k = list.findIndex(i => i >= S.idx);
+  return k < 0 ? 0 : k;
+}
+function stopReader(){
+  if (!reader.on) return;
+  reader.on = false; reader.tok++; reader.part = '';
+  if (synth) synth.cancel();
+  render();
+}
+async function startReader(fromStart){
+  const d = curDialog(); if (!d || !synth) return;
+  if (reader.on){ stopReader(); return; }
+  const list = navList(d); if (!list.length) return;
+  const from = fromStart ? 0 : readFrom(list);
+  const tok = ++reader.tok;
+  const alive = () => reader.on && reader.tok === tok;
+  reader.on = true; reader.i = -1; reader.part = '';
+  S.finish = false; S.readMsg = ''; S.idx = list[from];
+  synth.cancel(); speaking = false;
+  render(); window.scrollTo(0,0);
+  await sleep(150);
+  if (!alive()) return;
+  if (from === 0 && d.briefing){
+    reader.part = 'brief'; render();
+    await sayText(d.briefing, 'en', tok); if (!alive()) return;
+    await sleep(900); if (!alive()) return;
+  }
+  for (let k = from; k < list.length; k++){
+    const i = list[k], s = d.segs[i];
+    if (!s) break;
+    reader.i = i; S.idx = i;
+    reader.part = 'src'; render();
+    await sayText(s.text, s.lang, tok); if (!alive()) return;
+    if (s.ref){
+      await sleep(600); if (!alive()) return;
+      reader.part = 'ref'; render();
+      await sayText(s.ref, HAN.test(s.ref) ? 'zh' : 'en', tok); if (!alive()) return;
+    }
+    await sleep(1000); if (!alive()) return;
+  }
+  reader.on = false; reader.part = '';
+  S.idx = list[0]; S.readMsg = '整篇朗读完毕。';
+  render();
+}
+function readBtnHTML(list){
+  if (!synth || !list.length) return '';
+  const k = readFrom(list);
+  return `<div class="row" style="margin:-4px 0 14px">
+    <button class="btn" data-act="read-all">▶ ${k > 0 ? '从第 ' + (list[k] + 1) + ' 段起朗读' : '整篇朗读'}</button>
+    ${k > 0 ? '<button class="btn ghost" data-act="read-all" data-from="start">从头朗读</button>' : ''}
+    <span class="plays">原文 + 译文，自动读完</span></div>`;
+}
+function readerHTML(d, list){
+  const s = d.segs[S.idx];
+  const k = list.indexOf(S.idx);
+  let h = `<section class="reading" aria-live="polite"><div class="meta"><b>正在朗读</b><span>${reader.part === 'brief' ? 'Briefing' : '第 ' + (k + 1) + ' / ' + list.length + ' 段'}</span></div>`;
+  if (reader.part === 'brief'){
+    h += `<div class="rline now" lang="en"><span class="rtag">Briefing</span>${esc(d.briefing)}</div>`;
+  } else if (s){
+    h += `<div class="rline${reader.part === 'src' ? ' now' : ''}" lang="${s.lang === 'zh' ? 'zh-CN' : 'en'}"><span class="rtag">原文</span>${esc(s.text)}</div>
+      <div class="rline${reader.part === 'ref' ? ' now' : ''}" lang="${HAN.test(s.ref || '') ? 'zh-CN' : 'en'}"><span class="rtag">译文</span>${s.ref ? esc(s.ref) : '（这一段没有译文）'}</div>`;
+  }
+  return h + '</section>';
+}
+function readerFoot(){
+  return `<nav class="foot"><div class="wrap"><button class="btn primary" data-act="read-all">■ 停止朗读</button></div></nav>`;
+}
+
+/* ---------- content from dialogs.json (sits next to this page) ---------- */
+/* The file is the source for dialog TEXT only. Ratings, position and completions
+   always stay on this device and are never read from the file. */
+const REMOTE_URL = 'dialogs.json';
+let remoteReady = false, remoteBusy = false, remoteAt = 0;
+function cleanSeg(s){
+  if (!s || typeof s.text !== 'string') return null;
+  const text = s.text.trim(); if (!text) return null;
+  return {text, ref: typeof s.ref === 'string' ? s.ref.trim() : '',
+    lang: (s.lang === 'zh' || s.lang === 'en') ? s.lang : (HAN.test(text) ? 'zh' : 'en')};
+}
+function cleanRemote(raw){
+  if (!raw || !Array.isArray(raw.segs)) return null;
+  const segs = raw.segs.map(cleanSeg).filter(Boolean);
+  if (!segs.length) return null;
+  const str = v => typeof v === 'string' ? v.trim() : '';
+  return {title:str(raw.title) || '未命名对话', domain:str(raw.domain), source:str(raw.source), briefing:str(raw.briefing), segs};
+}
+function contentKey(d){
+  return JSON.stringify([d.title || '', d.domain || '', d.source || '', d.briefing || '',
+    (d.segs || []).map(s => [s.text, s.ref || '', s.lang])]);
+}
+function safeKey(k){ return typeof k === 'string' && /^[A-Za-z0-9_-]{1,40}$/.test(k) && k !== '__proto__'; }
+function hasDialog(k){ return safeKey(k) && Object.prototype.hasOwnProperty.call(S.dialogs, k); }
+function mergeRemote(json){
+  let entries;
+  if (Array.isArray(json)) entries = json.map(d => [d && d.id, d]);
+  else if (json && Array.isArray(json.dialogs)) entries = json.dialogs.map(d => [d && d.id, d]);
+  else if (json && json.dialogs && typeof json.dialogs === 'object') entries = Object.entries(json.dialogs);
+  else throw new Error('format');
+  const r = {total:entries.length, added:0, updated:0, reset:0, skipped:0};
+  const now = new Date().toISOString();
+  for (const [key, raw] of entries){
+    const c = cleanRemote(raw);
+    if (!c){ r.skipped++; continue; }
+    const id = hasDialog(key) ? key : findExisting(c);
+    if (id){
+      const d = S.dialogs[id];
+      const changed = contentKey(d) !== contentKey(c);
+      if (changed){
+        const keep = d.segs.length === c.segs.length;
+        Object.assign(d, c);
+        if (!keep){ d.ratings = {}; d.pos = 0; r.reset++; }
+        r.updated++;
+      }
+      if (changed || !d.fromFile){ d.fromFile = true; persist(id); }
+    } else {
+      const nid = safeKey(key) ? key : uid8();
+      const created = (raw && typeof raw.created === 'string' && !isNaN(new Date(raw.created))) ? raw.created : now;
+      S.dialogs[nid] = Object.assign({}, c, {ratings:{}, pos:0, completions:[], created, fromFile:true});
+      persist(nid); r.added++;
+    }
+  }
+  const cd = S.cur && S.dialogs[S.cur];
+  if (cd) S.idx = Math.max(0, Math.min(S.idx, cd.segs.length - 1));
+  return r;
+}
+function remoteSummary(r){
+  if (!r.total) return 'dialogs.json 里还没有对话。';
+  let m = (r.added || r.updated)
+    ? '已同步：' + [r.added ? '新增 ' + r.added + ' 篇' : '', r.updated ? '更新 ' + r.updated + ' 篇' : ''].filter(Boolean).join('，') + '。'
+    : '已经是最新的，共 ' + (r.total - r.skipped) + ' 篇。';
+  if (r.reset) m += ' 其中 ' + r.reset + ' 篇段数变了，这几篇的熟悉度已重置。';
+  if (r.skipped) m += ' 有 ' + r.skipped + ' 篇格式不对，已跳过（每篇要有 segs 列表，每段要有 text）。';
+  return m;
+}
+async function syncRemote(manual){
+  if (remoteBusy){ if (manual) setTimeout(() => syncRemote(true), 400); return; }
+  remoteBusy = true; remoteAt = Date.now();
+  let msg = '', bad = false, changed = false;
+  try {
+    const res = await fetch(REMOTE_URL, {cache:'no-cache'});
+    if (!res.ok){
+      msg = res.status === 404 ? '没有找到 dialogs.json（要和 index.html 放在同一个位置）。' : '读取 dialogs.json 失败（错误 ' + res.status + '）。';
+    } else {
+      let json = null;
+      try { json = await res.json(); }
+      catch(e){ bad = true; msg = 'dialogs.json 的格式不对，读不出来。请检查有没有多余或缺少的逗号、引号和括号。'; }
+      if (!bad){
+        try {
+          const r = mergeRemote(json);
+          changed = r.added + r.updated > 0;
+          msg = remoteSummary(r);
+          if (r.skipped) bad = true;
+        } catch(e){ bad = true; msg = 'dialogs.json 里没有找到 dialogs 列表。'; }
+      }
+    }
+  } catch(e){
+    msg = location.protocol === 'file:'
+      ? '直接打开本地文件时，浏览器不允许读取 dialogs.json，发布到网址后才能用。'
+      : '读取 dialogs.json 失败，请检查网络后再试。';
+  }
+  remoteBusy = false;
+  S.fileErr = bad ? msg : '';
+  if (changed && !bad) S.syncNote = msg;
+  if (manual || changed || bad){
+    S.remoteMsg = msg;
+    if (S.view !== 'import') render();
+  }
+}
+function startRemote(){ remoteReady = true; syncRemote(false); }
+
 /* ---------- backup ---------- */
 function backupName(){
   const d = new Date();
@@ -581,7 +788,7 @@ function importBackup(file){
       }
       if (j.meta && j.meta.lastId && S.dialogs[j.meta.lastId]){ S.meta.lastId = j.meta.lastId; persist('meta'); }
       S.backupMsg = '已导入 ' + n + ' 篇对话和它们的进度。';
-    } catch(e){ S.backupMsg = '这个文件不是背题本的备份。'; }
+    } catch(e){ S.backupMsg = '这个文件不是 Design Text 的备份。'; }
     render();
   };
   r.onerror = () => { S.backupMsg = '读取文件失败。'; render(); };
@@ -597,11 +804,13 @@ function noticeHTML(){
   if (S.notice) h += `<p class="notice">${esc(S.notice)}</p>`;
   if (S.slow) h += `<p class="notice">暂时连不上云端，显示的进度可能不是最新的。</p>`;
   if (S.syncErr) h += `<p class="notice syncerr">${esc(S.syncErr)}</p>`;
+  if (S.fileErr) h += `<p class="notice syncerr">${esc(S.fileErr)}</p>`;
+  if (S.syncNote) h += `<p class="notice">${esc(S.syncNote)}</p>`;
   return h;
 }
 
 function viewLoading(){
-  return topBar('', '<span class="brand">CCL 背题本</span>') +
+  return topBar('', '<span class="brand">Design Text</span>') +
     `<main class="wrap"><p class="loading">正在读取你的题库…${S.slow ? '<br>网络有点慢，再等一下。' : ''}</p></main>`;
 }
 
@@ -609,7 +818,7 @@ function viewHome(){
   const list = sortedDialogs();
   const last = S.meta.lastId && S.dialogs[S.meta.lastId] ? Object.assign({id:S.meta.lastId}, S.dialogs[S.meta.lastId]) : null;
   const totalDone = list.reduce((a,d) => a + ((d.completions||[]).length), 0);
-  let h = topBar('', '<span class="brand">CCL 背题本</span>',
+  let h = topBar('', '<span class="brand">Design Text</span>',
     `<button class="iconbtn" data-act="settings" aria-label="设置">设置</button>`);
   h += '<main class="wrap">' + noticeHTML();
   if (!list.length){
@@ -639,7 +848,7 @@ function viewHome(){
         ${barHTML(d)}
       </button>
       <div class="tools">${S.confirmDel === d.id
-        ? `<span class="counter" style="align-self:center">删除后进度也会清空</span><button class="btn small ghost" data-act="cancel-del">取消</button><button class="btn small danger" data-act="del" data-id="${esc(d.id)}">确认删除</button>`
+        ? `<span class="counter" style="white-space:normal;text-align:right;font-size:.85rem">${d.fromFile ? '删除后进度会清空。它还在 dialogs.json 里，下次打开页面会再出现。' : '删除后进度也会清空'}</span><button class="btn small ghost" data-act="cancel-del">取消</button><button class="btn small danger" data-act="del" data-id="${esc(d.id)}">确认删除</button>`
         : `<button class="btn small ghost" data-act="ask-del" data-id="${esc(d.id)}">删除</button>`}</div>
     </li>`;
   }
@@ -679,15 +888,18 @@ function viewStudy(){
   const weakN = weakList(d).length;
   let h = topBar(`<button class="iconbtn" data-act="home" aria-label="返回题库">← 题库</button>`, esc(d.title),
     `<span class="counter">${S.finish ? '完成' : (S.idx+1) + ' / ' + n}</span>`);
-  h += '<main class="wrap">' + (S.syncErr ? `<p class="notice syncerr">${esc(S.syncErr)}</p>` : '');
+  h += '<main class="wrap">' + (S.syncErr ? `<p class="notice syncerr">${esc(S.syncErr)}</p>` : '')
+    + (S.readMsg && !reader.on ? `<p class="notice">${esc(S.readMsg)}</p>` : '');
   h += '<div class="strip" role="navigation" aria-label="段落">' + d.segs.map((s,i) => {
     const l = (d.ratings && d.ratings[i]) || 0;
     const dim = S.filter === 'weak' && list.indexOf(i) < 0;
     return `<button class="dot l${l}${i === S.idx && !S.finish ? ' cur' : ''}${dim ? ' dim' : ''}" data-act="jump" data-i="${i}" aria-label="第 ${i+1} 段">${i+1}</button>`;
   }).join('') + '</div>';
+  if (reader.on) return h + readerHTML(d, list) + '<div class="spacer"></div></main>' + readerFoot();
   h += `<div class="modes" role="group" aria-label="练习范围">
     <button class="seg${S.filter==='all'?' on':''}" data-act="filter" data-f="all">全部 ${n} 段</button>
     <button class="seg${S.filter==='weak'?' on':''}" data-act="filter" data-f="weak">只练不熟 ${weakN} 段</button></div>`;
+  h += readBtnHTML(list);
 
   if (S.finish) return h + finishHTML(d) + '</main>';
   if (S.filter === 'weak' && !weakN){
@@ -778,6 +990,10 @@ function viewSettings(){
     <div class="f"><label>进度保存</label><span class="hint">${S.mode === 'local'
       ? '目前只保存在这台设备的浏览器里。'
       : '保存在你的 Claude 账号里，手机和电脑打开同一个页面就能同步。'} 声音和语速是每台设备单独设置的。</span></div>
+    <div class="f"><label>内容同步</label>
+      <span class="hint">打开页面时会读取放在一起的 dialogs.json：新的对话自动加进题库，已有的对话只更新文字，你的熟悉度和进度不会动。</span>
+      <div class="row"><button class="btn small" data-act="sync-file">立即同步</button></div>
+      ${S.remoteMsg ? `<span class="hint">${esc(S.remoteMsg)}</span>` : ''}</div>
     <div class="f"><label>备份</label>
       <span class="hint">导出的备份文件包含所有对话、熟悉度和学完次数，可以在另一个版本里导入。同一篇对话会被备份里的版本覆盖。</span>
       <div class="row">${(S.mode === 'local' || dlCap) ? '<button class="btn small" data-act="export">导出备份</button>' : ''}
@@ -802,6 +1018,7 @@ function render(){
 app.addEventListener('click', e => {
   const b = e.target.closest('[data-act]'); if (!b) return;
   const act = b.dataset.act;
+  if (reader.on && act !== 'read-all') stopReader();
   const d = curDialog();
   switch (act){
     case 'home': S.view = 'home'; S.confirmDel = null; if (synth) synth.cancel(); render(); window.scrollTo(0,0); break;
@@ -841,6 +1058,8 @@ app.addEventListener('click', e => {
     case 'restart': if (d){ S.filter = 'all'; openDialog(S.cur, {fromStart:true}); } break;
     case 'restart-weak': if (d){ openDialog(S.cur, {fromStart:true, filter:'weak'}); } break;
     case 'export': exportBackup(); break;
+    case 'sync-file': S.remoteMsg = '正在读取…'; render(); syncRemote(true); break;
+    case 'read-all': startReader(b.dataset.from === 'start'); break;
     case 'test-zh': speak('你好，感谢您百忙之中抽空见我。', 'zh', b); break;
     case 'test-en': speak('Hello, that’s totally fine. What can I do for you?', 'en', b); break;
   }
@@ -864,6 +1083,7 @@ document.addEventListener('keydown', e => {
   const tag = (e.target.tagName || '').toLowerCase();
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
   const k = e.key;
+  if (reader.on){ if (k === ' ' || k === 'Escape'){ e.preventDefault(); stopReader(); } return; }
   if (k === 'ArrowRight'){ e.preventDefault(); step(1); }
   else if (k === 'ArrowLeft'){ e.preventDefault(); step(-1); }
   else if (S.finish) return;
@@ -871,6 +1091,11 @@ document.addEventListener('keydown', e => {
   else if (k === 'h' || k === 'H'){ S.hint = Math.min(4, S.hint + 1); render(); }
   else if (k === 'a' || k === 'A'){ S.hint = 4; render(); }
   else if (/^[1-4]$/.test(k)){ rate(Number(k)); }
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden || !remoteReady || S.view !== 'home') return;
+  if (Date.now() - remoteAt > 60000) syncRemote(false);
 });
 
 init();
